@@ -1,25 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
 }
 
-body, .select-roles, .select-chat{
+body{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    width: 100vw;
 }
 
-.chat, .select-chat{
+.chats{
     display: none;
 }
 
-.chat{
-    border: 2px solid;
-    width: 250px;
-    height: 500px;
+.chat-display{
+    display: none;
+    align-items: center;
+    flex-direction: column;
+}
+
+.messages-cont{
+    width: 75vw;
+    height: 85vh;
+    position: relative;
+    background: #383838;
+    color: #fff;
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.send-container{
+    width: 75vw;
+}
+
+.delivered p{
+    margin: 5px 10px;
+    background: #242424;
+    color: #c7c7c7;
+    box-sizing: content-box;
+    padding: 10px 4px;
+    display: inline-block;
+    width: auto;
+}
+.delivered{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+.received p{
+    margin: 5px 10px;
+    background: #c7c7c7;
+    color: #242424;
+    box-sizing: content-box;
+    padding: 10px 4px;
+    display: inline-block;
+    width: auto;
+}
+.received{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.server-message p{
+    background: transparent;
+    color: #b4b4b4;
+    margin: 5px 10px;
+    box-sizing: content-box;
+    padding: 10px 4px;
+    display: inline-block;
+    width: auto;
+}
+.server-message{
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }

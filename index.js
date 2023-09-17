@@ -25,23 +25,24 @@ app.get('/', (req, res)=>{
 io.on('connection', (socket)=>{
     console.log('A user connected');
 
-    socket.on('joinRoom', (roomName)=>{
+    socket.on('joinRoom', (roomName, user)=>{
         socket.join(roomName)
-        console.log(`User joined room: ${roomName}`)
+        io.to(roomName).emit('message', `Chat: ${user} joined`)
+        console.log(`${user} joined room: ${roomName}`)
      })
 
     socket.on('chat message', (message)=>{
       io.emit('chat message', message)
     })
 
-    socket.on('broadcastToRoom', (roomName, message) => {
-      io.to(roomName).emit('message', message);
+    socket.on('broadcastToRoom', (roomName, message, from) => {
+      io.to(roomName).emit('message', `${from}: ${message}`, from);
       console.log(`Broadcasted to room ${roomName}: ${message}`);
     });
 
-    socket.on('leaveRoom', (roomName)=>{
+    socket.on('leaveRoom', (roomName, user)=>{
       socket.leave(roomName)
-      console.log(`User left room: ${roomName}`)
+      console.log(`${user} left room: ${roomName}`)
     })
 
     socket.on('changeRoom', (currentRoom, newRoom)=>{
