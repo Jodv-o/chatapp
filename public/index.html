@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat App</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="select-roles">
+      <h1>Choose your role</h1>
+
+      <div class="roles-buttons">
+        <button class="parent">Parent</button>
+        <button class="teacher">Teacher</button>
+      </div>
+    </div>
+    <div class="select-chat">
+      <h1>Chats</h1>
+
+      <div class="chats">
+        <button class="course">10mo A</button>
+        <button class="comunicados">comunicados</button>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div id="messages"></div>
+      <input type="text" autocomplete="off" id="message-input"><button id="send-button">Send</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+      const parent_btn = document.querySelector('.parent')
+      const teacher_btn = document.querySelector('.teacher')
+      const course_btn = document.querySelector('.course')
+      const comu_btn = document.querySelector('.comunicados')
+      const $roles_container = document.querySelector('.select-roles')
+      const $chats_container = document.querySelector('.select-chat')
+      const $messages_container = document.querySelector('.chat')
+
+      let course = false
+      let parent = false
+
+      function addMessage(message) {
+        const messageItem = document.createElement('p');
+        messageItem.textContent = message;
+        $messages_container.appendChild(messageItem);
+      }
+
+      parent_btn.addEventListener('click', ()=>{
+        $roles_container.style.display = 'none'
+        $chats_container.style.display = 'block'
+
+        parent = true
+      })
+      teacher_btn.addEventListener('click', ()=>{
+        $roles_container.style.display = 'none'
+        $chats_container.style.display = 'block'
+
+        parent = false
+      })
+      course_btn.addEventListener('click', ()=>{
+        socket.emit('joinRoom', 'course')
+        course = true
+
+        console.log('joined to course')
+
+        $chats_container.style.display = 'none'
+        $messages_container.style.display = 'block'
+
+        if(parent){
+          sendButton.style.display = 'none'
+          messageInput.style.display = 'none'
+        }
+      })
+      comu_btn.addEventListener('click', ()=>{
+        socket.emit('joinRoom', 'comu')
+        course = false
+
+        console.log('joined to comunicates')
+
+        $chats_container.style.display = 'none'
+        $messages_container.style.display = 'block'
+
+        if(parent){
+          sendButton.style.display = 'none'
+          messageInput.style.display = 'none'
+        }
+      })
+      
+      sendButton.addEventListener('click', () => {
+        const message = messageInput.value;
+        if (message.trim() !== '') {
+          if(course){
+            socket.emit('broadcastToRoom', 'course',message);
+            messageInput.value = '';
+          }else{
+            socket.emit('broadcastToRoom', 'comu',message);
+            messageInput.value = '';
+          }
+        }
+      });
+
+      socket.on('message', (message) => {
+        addMessage(message);
+      });
+
+      messageInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          sendButton.click();
+        }
+      });
+    </script>
+  </body>
+</html>
