@@ -8,7 +8,7 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
-app.use(express.static('public'));
+app.use(express.static('public'))
 
 app.get('/', (req, res)=>{
   fs.readFile(__dirname+'/public/index.html', 'utf-8', (err, data)=>{
@@ -38,6 +38,18 @@ io.on('connection', (socket)=>{
       io.to(roomName).emit('message', message);
       console.log(`Broadcasted to room ${roomName}: ${message}`);
     });
+
+    socket.on('leaveRoom', (roomName)=>{
+      socket.leave(roomName)
+      console.log(`User left room: ${roomName}`)
+    })
+
+    socket.on('changeRoom', (currentRoom, newRoom)=>{
+      socket.leave(currentRoom)
+      socket.join(newRoom)
+      console.log(`User left room: ${currentRoom}`)
+      console.log(`User joined room: ${newRoom}`)
+    })
 
     socket.on('disconnect', () => {
       console.log('A user disconnected');

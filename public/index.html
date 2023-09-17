@@ -23,6 +23,7 @@
     </div>
 
     <div class="chat">
+      <button class="back">Back</button>
       <div id="messages"></div>
       <input type="text" autocomplete="off" id="message-input"><button id="send-button">Send</button>
     </div>
@@ -32,6 +33,7 @@
       const socket = io();
 
       const messageInput = document.getElementById('message-input');
+      const $message_cont = document.getElementById('messages');
       const sendButton = document.getElementById('send-button');
       const parent_btn = document.querySelector('.parent')
       const teacher_btn = document.querySelector('.teacher')
@@ -40,6 +42,7 @@
       const $roles_container = document.querySelector('.select-roles')
       const $chats_container = document.querySelector('.select-chat')
       const $messages_container = document.querySelector('.chat')
+      const $back_btn = document.querySelector('.back')
 
       let course = false
       let parent = false
@@ -47,7 +50,7 @@
       function addMessage(message) {
         const messageItem = document.createElement('p');
         messageItem.textContent = message;
-        $messages_container.appendChild(messageItem);
+        $message_cont.appendChild(messageItem);
       }
 
       parent_btn.addEventListener('click', ()=>{
@@ -68,6 +71,8 @@
 
         console.log('joined to course')
 
+        $message_cont.innerHTML = ''
+
         $chats_container.style.display = 'none'
         $messages_container.style.display = 'block'
 
@@ -82,12 +87,26 @@
 
         console.log('joined to comunicates')
 
+        $message_cont.innerHTML = ''
+
         $chats_container.style.display = 'none'
         $messages_container.style.display = 'block'
 
         if(parent){
           sendButton.style.display = 'none'
           messageInput.style.display = 'none'
+        }
+      })
+
+      $back_btn.addEventListener('click', ()=>{
+        $chats_container.style.display = 'block'
+        $messages_container.style.display = 'none'
+        if(course){
+          socket.emit('leaveRoom', 'course')
+          course = false
+        }else{
+          socket.emit('leaveRoom', 'comu')
+          course = false
         }
       })
       
