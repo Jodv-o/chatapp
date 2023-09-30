@@ -12,6 +12,10 @@ body{
     width: 100vw;
 }
 
+.container{
+    width: 40vw;
+}
+
 .chats{
     display: none;
 }
@@ -51,6 +55,7 @@ body{
 .delivered{
     display: flex;
     justify-content: flex-start;
+    align-items: end;
     width: 100%;
 }
 .received p{
@@ -66,6 +71,7 @@ body{
     display: flex;
     justify-content: flex-end;
     width: 100%;
+    align-items: end;
 }
 .server-message p{
     background: transparent;
@@ -80,4 +86,71 @@ body{
     display: flex;
     justify-content: center;
     width: 100%;
+}
+
+.send-button{
+    width: 25vw;
+}
+.img_input{
+    width: 25vw;
+}
+.message-input{
+    width: 75vw;
+}
+
+.img{
+    max-width: 250px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin: 5px 10px;
+}
+
+@media (max-width: 700px) {
+    .container{
+        width: 80vw;
+    }
+}
+@media (max-width: 500px) {
+    .chat-display{
+        max-height: 50vh;
+        max-width: 80vw;
+    }
+    .send-button{
+        width: 25%;
+    }
+    #img_input{
+        width: 25%;
+    }
+    .message-input{
+        width: 65%;
+    }
+    .img{
+        max-width: 200px;
+        max-height: 100px;
+    }
+}
+@media (max-width: 400px) {
+    .container{
+        width: 90vw;
+        transform: scale(0.8);
+    }
+    .chat-display{
+        transform: scale(1.05);
+        max-height: 60vh;
+        max-width: 90vw;
+    }
+    .send-button{
+        width: 25%;
+    }
+    #img_input{
+        width: 20%;
+    }
+    #message-input{
+        width: 60%;
+    }
+    .img{
+        max-width: 150px;
+        max-height: 50px;
+    }
 }

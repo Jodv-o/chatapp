@@ -9,6 +9,7 @@ const $chat_display = document.querySelector('.chat-display')
 const $message_input = document.querySelector('.message-input')
 const $send_btn = document.querySelector('.send-button')
 const $messages_cont = document.querySelector('.messages-cont')
+const $img_input = document.querySelector('.img_input')
 
 let uname, $chats
 let role = $role.value
@@ -83,11 +84,40 @@ function addMessage(message, from) {
     }
     div.appendChild(messageItem)
     $messages_cont.appendChild(div);
-  }
+    $messages_cont.scrollTop = $messages_cont.scrollHeight;
+}
+function addImg(url, from){
+    const img = document.createElement('img')
+    const div = document.createElement('div')
+    img.src = url
+    img.classList.add('img')
+    if(!from){
+        div.classList.add('server-message')
+    }else if(from==uname){
+        div.classList.add('delivered')
+    }else if(from!=uname){
+        div.classList.add('received')
+    }
+    div.appendChild(img)
+    $messages_cont.appendChild(div);
+    $messages_cont.scrollTop = $messages_cont.scrollHeight;
+}
+
+function sendImg(){
+    let image = $img_input.files[0]
+    let blob = new Blob([image], { type: image.type })
+    let url = URL.createObjectURL(blob)
+    socket.emit('broadcastImageToRoom', room_name, url, uname)
+    $img_input.value = ""
+}
 
 socket.on('message', (message, from) => {
     addMessage(message, from);
 });
+
+socket.on('sendImage', (from, url)=>{
+    addImg(url, from)
+})
 
 $role.addEventListener('change', ()=>{
     role = $role.value
@@ -137,11 +167,13 @@ $next_button.addEventListener('click', ()=>{
                 if(!canWrite){
                     $message_input.setAttribute('placeholder', 'You can not talk in this conversation')
                     $message_input.setAttribute('disabled', true)
+                    $img_input.setAttribute('hidden', true)
                     $send_btn.setAttribute('disabled', true)
                 }else{
                     $send_btn.removeAttribute('disabled')
                     $message_input.removeAttribute('disabled')
                     $message_input.removeAttribute('placeholder')
+                    $img_input.removeAttribute('hidden')
                 }
         
                 $chat_sect.style.display = "none"
@@ -161,11 +193,20 @@ $send_btn.addEventListener('click', ()=>{
     if(room_name){
         const message = $message_input.value;
         if (message.trim() !== '') {
-          socket.emit('broadcastToRoom', room_name, message, uname);
-          $message_input.value = '';
+            socket.emit('broadcastToRoom', room_name, message, uname);
+            $message_input.value = '';
+            if($img_input){
+                sendImg()
+            }
+        }else{
+            if($img_input){
+                sendImg()
+            }
         }
     }
 })
+
+
 
 document.addEventListener('keydown', (e)=>{
     if(e.key=='Enter'){

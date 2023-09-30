@@ -4,33 +4,37 @@
     <title>Chat App</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <div class="login">
-      <label for="name">What's your name?</label>
-      <input type="text" class="name-input" required>
-      
-      <h1>Choose your role</h1>
-
-      <select class="role" required>
-        <option value="parent">Parent</option>
-        <option value="teacher">Teacher</option>
-      </select>
-
-      <input type="submit" value="Continue" class="continue">
-    </div>
-
-    <div class="chats" style="padding: 25px;">
+    <div class="container">
+      <div class="login">
+        <label for="name">What's your name?</label>
+        <input type="text" class="name-input" required>
         
-    </div>
-
-    <div class="chat-display">
-      <div class="messages-cont">
-        
+        <h1>Choose your role</h1>
+  
+        <select class="role" required>
+          <option value="parent">Parent</option>
+          <option value="teacher">Teacher</option>
+        </select>
+  
+        <input type="submit" value="Continue" class="continue">
       </div>
-      <div class="send-container" style="display: flex; flex-direction: row;">
-        <input type="text" class="message-input" style="width: 75vw;">
-        <button class="send-button" style="width: 25vw;">Send</button>
+  
+      <div class="chats" style="padding: 25px;">
+          
+      </div>
+  
+      <div class="chat-display">
+        <div class="messages-cont">
+          
+        </div>
+        <div class="send-container" style="display: flex; flex-direction: row;">
+          <input type="file" class="img_input" id="img_input" accept="image/*">
+          <input type="text" class="message-input" id="message-input">
+          <button class="send-button">Send</button>
+        </div>
       </div>
     </div>
 

@@ -40,6 +40,11 @@ io.on('connection', (socket)=>{
       console.log(`Broadcasted to room ${roomName}: ${message}`);
     });
 
+    socket.on('broadcastImageToRoom', (roomName, url, from)=>{
+      io.to(roomName).emit('sendImage', from, url)
+      console.log('Broadcasted image to room')
+    })
+
     socket.on('leaveRoom', (roomName, user)=>{
       socket.leave(roomName)
       console.log(`${user} left room: ${roomName}`)
